@@ -151,7 +151,7 @@ impl SealedBidAuction {
         }
 
         let sender = msg::sender();
-        if commitment == B256::zero() {
+        if commitment == B256::ZERO {
             return Err(SealedBidError::InvalidCommit(InvalidCommit {}));
         }
 
@@ -192,7 +192,7 @@ impl SealedBidAuction {
         }
 
         let commitment = self.commitments.get(sender);
-        if commitment == B256::zero() {
+        if commitment == B256::ZERO {
             return Err(SealedBidError::InvalidCommit(InvalidCommit {}));
         }
 
@@ -422,7 +422,7 @@ impl SealedBidAuction {
     }
 
     /// Transfer NFT with safety check
-    fn transfer_nft(&self, from: Address, to: Address) -> Result<(), SealedBidError> {
+    fn transfer_nft(&mut self, from: Address, to: Address) -> Result<(), SealedBidError> {
         let nft_contract = IERC721::new(self.nft_contract.get());
         let token_id = self.token_id.get();
         let res = nft_contract.transfer_from(call::Call::new_in(self), from, to, token_id);
